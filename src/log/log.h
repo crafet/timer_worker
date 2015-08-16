@@ -31,7 +31,7 @@ typedef enum {
 		va_start(ap, fmt);\
 		ret = vsnprintf(curb, MAX_LOG_BUFFER_SIZE, fmt, ap);\
 		va_end(ap);\
-		fprintf(stdout, "%s", buff);\
+		fprintf(stdout, "%s\n", buff);\
 		return ret;\
 	}
 
