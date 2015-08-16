@@ -211,6 +211,33 @@ namespace crafet {
 					continue;
 				}
 			}// end of while
+
+			// exit from while
+			if (lock_hold) {
+				pthread_mutex_unlock(&mutex);
+			}
+		}
+
+
+		void TimerWorker::stop_and_join()
+		{
+			if (pthread_self() == thread) {
+				stop = true;
+			} else {
+				
+				pthread_mutex_lock(&mutex);
+				stop = true;
+
+				// wake up the timer thread in case it is sleeping
+				// while wake up, the timer thread will step into run()
+				// and then check stop = true
+				pthread_cond_signal(&cond);
+				pthread_mutex_unlock(&mutex);
+
+				if (started) {
+					pthread_join(thread, NULL);	
+				}
+			}
 		}
 	} // end of namespace timer_worker
 } // end of namespace crafet
