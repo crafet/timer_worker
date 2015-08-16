@@ -235,7 +235,11 @@ namespace crafet {
 				pthread_mutex_unlock(&mutex);
 
 				if (started) {
-					pthread_join(thread, NULL);	
+					if (pthread_join(thread, NULL) != 0) {
+					   log_error("failed to join the timer thread");
+						
+					}
+					}	
 				}
 			}
 		}
